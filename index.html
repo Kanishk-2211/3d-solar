@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Solar System Explorer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">🚀</div>
+            <h1>Solar System Explorer</h1>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text">Loading universe...</p>
+        </div>
+    </div>
+
+    <!-- Main UI -->
+    <div id="main-ui" style="display: none;">
+        <!-- Navigation Menu -->
+        <nav class="nav-menu">
+            <div class="nav-logo">🌌</div>
+            <div class="nav-buttons">
+                <button class="nav-btn active" data-view="solar-system">Solar System</button>
+                <button class="nav-btn" data-view="earth">Earth View</button>
+                <button class="nav-btn" data-view="galaxy">Galaxy</button>
+            </div>
+            <div class="nav-controls">
+                <button id="time-control" class="control-btn" title="Pause/Play Time">
+                    <span class="icon">⏸️</span>
+                </button>
+                <button id="music-toggle" class="control-btn" title="Toggle Music">
+                    <span class="icon">🔊</span>
+                </button>
+                <button id="vr-mode" class="control-btn" title="VR Mode">
+                    <span class="icon">🥽</span>
+                </button>
+                <button id="night-mode" class="control-btn" title="Night Mode">
+                    <span class="icon">🌙</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Time Controls -->
+        <div class="time-controls">
+            <div class="time-display">
+                <span id="current-time">Earth Time: 2024</span>
+            </div>
+            <div class="time-slider">
+                <input type="range" id="time-speed" min="0" max="1000" value="100" step="10">
+                <label for="time-speed">Time Speed</label>
+            </div>
+        </div>
+
+        <!-- Earth Search Bar -->
+        <div id="earth-search" class="search-container" style="display: none;">
+            <div class="search-box">
+                <input type="text" id="location-search" placeholder="Search for a city, landmark, or location...">
+                <button id="search-btn">🔍</button>
+            </div>
+            <div class="search-suggestions" id="search-suggestions"></div>
+        </div>
+
+        <!-- Info Panel -->
+        <div id="info-panel" class="info-panel">
+            <div class="info-header">
+                <h3 id="info-title">Solar System Info</h3>
+                <button id="close-info" class="close-btn">×</button>
+            </div>
+            <div class="info-content" id="info-content">
+                <p>Click on any planet, moon, or celestial object to learn more about it.</p>
+            </div>
+        </div>
+
+        <!-- 3D Canvas Container -->
+        <div id="canvas-container">
+            <canvas id="solar-system-canvas"></canvas>
+        </div>
+
+        <!-- HUD Elements -->
+        <div class="hud">
+            <div class="hud-info">
+                <span id="current-view">Solar System View</span>
+                <span id="fps-counter">FPS: 60</span>
+            </div>
+            <div class="hud-controls">
+                <div class="control-hint">
+                    <span>Mouse: Rotate | Scroll: Zoom | Right Click: Pan</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Easter Egg Notification -->
+        <div id="easter-egg" class="easter-egg">
+            <span id="easter-egg-text"></span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/textures.js"></script>
+    <script src="js/celestial-bodies.js"></script>
+    <script src="js/solar-system-view.js"></script>
+    <script src="js/earth-view.js"></script>
+    <script src="js/galaxy-view.js"></script>
+    <script src="js/ui-manager.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
