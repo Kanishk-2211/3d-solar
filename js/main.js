@@ -101,22 +101,45 @@ const SolarSystemApp = {
             'uranus', 'neptune', 'moon'
         ];
         
+        // Start with 0% progress
+        this.uiManager.updateLoadingProgress(0);
+        
+        // Add timeout fallback to prevent hanging
+        const loadingTimeout = setTimeout(() => {
+            console.warn('Loading timeout reached, proceeding anyway...');
+            this.onTexturesLoaded();
+        }, 15000); // 15 second timeout
+        
         this.textureManager.loadTextures(
             essentialTextures,
             this.onTextureProgress.bind(this),
-            this.onTexturesLoaded.bind(this)
+            (textures) => {
+                clearTimeout(loadingTimeout);
+                this.onTexturesLoaded(textures);
+            }
         );
     },
     
     // Handle texture loading progress
     onTextureProgress: function(loaded, total) {
-        const progress = (loaded / total) * 100;
+        const progress = Math.min((loaded / total) * 100, 100);
+        console.log(`Texture loading progress: ${loaded}/${total} (${progress.toFixed(1)}%)`);
         this.uiManager.updateLoadingProgress(progress);
+        
+        // Ensure we reach 100% when all textures are loaded
+        if (loaded >= total) {
+            setTimeout(() => {
+                this.uiManager.updateLoadingProgress(100);
+            }, 100);
+        }
     },
     
     // Handle textures loaded
     onTexturesLoaded: function() {
         console.log('Essential textures loaded');
+        
+        // Ensure loading reaches 100%
+        this.uiManager.updateLoadingProgress(100);
         
         // Initialize celestial bodies
         this.initializeCelestialBodies();

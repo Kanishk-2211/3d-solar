@@ -117,10 +117,22 @@ const TextureManager = {
             // Set texture properties
             textureLoader.crossOrigin = "anonymous";
             
+            // Add timeout to prevent hanging
+            const textureTimeout = setTimeout(() => {
+                console.warn(`Texture loading timeout for: ${textureName}`);
+                this.loadingPromises.delete(textureName);
+                
+                // Use fallback material
+                const fallbackMaterial = this.createDefaultMaterial(textureName);
+                this.cache.set(textureName, fallbackMaterial);
+                resolve(fallbackMaterial);
+            }, 10000); // 10 second timeout
+            
             // Load texture
             textureLoader.load(
                 this.textureUrls[textureName],
                 (texture) => {
+                    clearTimeout(textureTimeout);
                     this.onTextureLoaded(textureName, texture);
                     this.cache.set(textureName, texture);
                     this.loadingPromises.delete(textureName);
@@ -130,6 +142,7 @@ const TextureManager = {
                 },
                 undefined,
                 (error) => {
+                    clearTimeout(textureTimeout);
                     console.warn(`Failed to load texture: ${textureName}`, error);
                     
                     // Use fallback material
@@ -178,15 +191,25 @@ const TextureManager = {
         
         if (onProgress) {
             let loaded = 0;
+            const total = textureNames.length;
+            
             promises.forEach(promise => {
                 promise.then(() => {
                     loaded++;
-                    onProgress(loaded, textureNames.length);
+                    onProgress(loaded, total);
+                }).catch(() => {
+                    // Even failed textures count as "loaded" to prevent hanging
+                    loaded++;
+                    onProgress(loaded, total);
                 });
             });
         }
         
-        return Promise.all(promises).then(textures => {
+        return Promise.allSettled(promises).then(results => {
+            const textures = results.map(result => 
+                result.status === 'fulfilled' ? result.value : null
+            ).filter(texture => texture !== null);
+            
             if (onComplete) onComplete(textures);
             return textures;
         });

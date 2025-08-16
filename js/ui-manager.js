@@ -541,6 +541,12 @@ const UIManager = {
                     this.hideInfoPanel();
                 }
                 break;
+            case 'l':
+                // Force complete loading if stuck (emergency)
+                if (this.elements.loadingScreen.style.display !== 'none') {
+                    this.forceCompleteLoading();
+                }
+                break;
         }
     },
     
@@ -584,6 +590,15 @@ const UIManager = {
         }, 500);
     },
     
+    // Force complete loading (emergency fallback)
+    forceCompleteLoading: function() {
+        console.log('Force completing loading...');
+        this.updateLoadingProgress(100);
+        setTimeout(() => {
+            this.hideLoadingScreen();
+        }, 1000);
+    },
+    
     // Update loading progress
     updateLoadingProgress: function(progress) {
         const progressBar = this.elements.loadingScreen.querySelector('.loading-progress');
@@ -594,6 +609,13 @@ const UIManager = {
         const loadingText = this.elements.loadingScreen.querySelector('.loading-text');
         if (loadingText) {
             loadingText.textContent = `Loading universe... ${Math.round(progress)}%`;
+        }
+        
+        // Auto-hide loading screen when progress reaches 100%
+        if (progress >= 100) {
+            setTimeout(() => {
+                this.hideLoadingScreen();
+            }, 500);
         }
     },
     
