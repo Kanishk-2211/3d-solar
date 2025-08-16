@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive 3D Solar System</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="loading-overlay" class="visible">
+    <div class="loader-card">
+      <div class="logo-row">
+        <span class="sun-dot"></span>
+        <span>Loading Space...</span>
+      </div>
+      <div id="loading-text">0%</div>
+      <div class="progress"><div class="bar" id="loading-bar" style="width:0%"></div></div>
+      <div id="loading-detail">Initializing</div>
+    </div>
+  </div>
+
+  <div id="topbar">
+    <div class="left">
+      <button class="view-btn" data-view="solar" id="btn-solar">Solar System</button>
+      <button class="view-btn" data-view="earth" id="btn-earth">Earth</button>
+      <button class="view-btn" data-view="galaxy" id="btn-galaxy">Galaxy</button>
+      <div class="divider"></div>
+      <button id="btn-vr" title="Enter VR" class="ghost">VR</button>
+      <button id="btn-music" class="ghost" title="Ambient sound">Music: Off</button>
+    </div>
+    <div class="center" id="earth-search-wrap" style="display:none">
+      <form id="earth-search-form">
+        <input id="earth-search" type="text" placeholder="Search location (e.g., Paris, Mount Everest)" autocomplete="off" />
+        <button type="submit">Go</button>
+      </form>
+    </div>
+    <div class="right">
+      <div id="time-controls">
+        <button id="btn-pause">Pause</button>
+        <button id="btn-play">Play</button>
+        <button id="btn-ff">Fast ×10</button>
+        <label class="slider-label">Speed <input id="speed-range" type="range" min="0" max="100" value="10" /></label>
+      </div>
+    </div>
+  </div>
+
+  <div id="app"></div>
+
+  <aside id="info-panel">
+    <div class="panel-header">
+      <h3 id="info-title">Welcome</h3>
+      <button id="info-close" title="Close">×</button>
+    </div>
+    <div id="info-content" class="panel-body">
+      <p>Click a planet or moon to see details here.</p>
+      <div id="apod" class="apod">
+        <div class="apod-title"></div>
+        <img class="apod-image" alt="NASA APOD"/>
+        <div class="apod-expl"></div>
+      </div>
+    </div>
+    <div class="panel-footer">
+      <button id="btn-flyby" class="ghost" disabled>Spacecraft Fly-by</button>
+    </div>
+  </aside>
+
+  <audio id="ambient-audio" loop preload="auto" crossorigin="anonymous"></audio>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
